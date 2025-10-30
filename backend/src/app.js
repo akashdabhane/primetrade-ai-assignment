@@ -11,7 +11,7 @@ const app = express();
 app.use(morgan('tiny'));
 
 app.use(cors({
-    origin: ['http://localhost:3000'], // allow requests from this origin
+    origin: ['http://localhost:3000', 'https://primetrade-ai-assignment-pi.vercel.app/'], // allow requests from this origin
     credentials: true, // allow cookies
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

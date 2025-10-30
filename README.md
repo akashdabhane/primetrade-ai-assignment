@@ -6,6 +6,17 @@
 
 ---
 
+## 🧑‍💻 Demo Credentials
+
+- **Admin:**  
+  - Email: `bhai@gmail.com`  
+  - Password: `11111111`
+- **User:**  
+  - Email: `akash@gmail.com`  
+  - Password: `11111111`
+
+---
+
 # Prime Trade AI Assignment
 
 A full-stack task management application with user authentication and admin capabilities. Built with Node.js/Express backend and Next.js frontend.
