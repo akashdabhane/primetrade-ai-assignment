@@ -11,8 +11,8 @@ const app = express();
 app.use(morgan('tiny'));
 
 app.use(cors({
-    origin: ["*"], // allow requests from this origin
-    credentials: true, // allow cookies
+    origin: true, // allow requests from any origin
+    credentials: true, // allow cookies (cross-site must be handled carefully on frontend)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
