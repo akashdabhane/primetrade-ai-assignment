@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaPlus, FaTrash, FaEdit, FaArrowRight } from 'react-icons/fa';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
   const [tasks, setTasks] = useState([]);
@@ -12,6 +13,7 @@ const Home = () => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [formData, setFormData] = useState({ title: '', description: '' });
+  const navigate = useRouter();
 
   const loadData = async () => {
     try {
@@ -30,6 +32,9 @@ const Home = () => {
   }
 
   useEffect(() => {
+    if (!Cookies.get('isLogin')) {
+      navigate.push('/login');
+    }
     loadData()
   }, [])
 
@@ -103,7 +108,7 @@ const Home = () => {
     <div className="w-full h-screen py-24 bg-gray-100">
       <div className="mx-4 md:m-auto text-black bg-white p-6 md:w-[70%] rounded-md shadow-md space-y-6">
         {
-          Cookies.get('isAdmin') && (
+          Cookies.get('isAdmin') === 'true' && (
             <button
               onClick={() => navigate.push('/admin/users')}
               className="flex items-center gap-2 cursor-pointer hover:text-black text-xl font-bold"

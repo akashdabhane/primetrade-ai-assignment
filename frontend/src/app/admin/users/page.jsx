@@ -29,6 +29,9 @@ export default function AdminUsersPage() {
     }
 
     useEffect(() => {
+        if (!(Cookies.get('isLogin') && Cookies.get('isAdmin') === 'true')) {
+            navigate.push('/login');
+        }
         loadData()
     }, []);
 

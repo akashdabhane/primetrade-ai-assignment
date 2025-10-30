@@ -1,3 +1,10 @@
+# 🚀 Live Demo & API
+
+- **Frontend (Website):** [https://primetrade-ai-assignment-pi.vercel.app/](https://primetrade-ai-assignment-pi.vercel.app/)
+- **Backend API:** [https://primetrade-ai-assignment-dk7p.onrender.com/api/v1](https://primetrade-ai-assignment-dk7p.onrender.com/api/v1)
+
+---
+
 # Prime Trade AI Assignment
 
 A full-stack task management application with user authentication and admin capabilities. Built with Node.js/Express backend and Next.js frontend.
@@ -24,10 +31,18 @@ A full-stack task management application with user authentication and admin capa
   - Create, read, update, and delete tasks
   - Filter tasks by user and status
   - Task status tracking (Pending, In Progress, Completed)
+  - **Live UI updates:** Creating, editing, deleting a task instantly updates the UI without requiring reload
 
 - **Admin Features**
   - Admin user management
   - User listing and details
+  - **Admin-only user and task access.**
+  - View a user's tasks grouped by status (Pending, In Progress, Completed)
+
+- **Frontend Route Protection**
+  - Home and admin pages are protected using browser cookies.
+  - Home (`/`) accessible only while logged in (redirects to `/login` if not).
+  - Admin routes (`/admin/users` and `/admin/users/[id]`) are accessible only for admin users (redirects to `/login` if not).
 
 ## 🛠 Tech Stack
 
@@ -122,7 +137,7 @@ prime-trade-ai-assignment/
 
 ## 🔐 Environment Variables
 
-Create a `.env` file in the `backend` directory with the following variables:
+Create a `.env` file **inside the `backend` directory** with the following variables:
 
 ```env
 PORT=8000
@@ -132,6 +147,8 @@ ACCESS_TOKEN_EXPIRY=15m
 REFRESH_TOKEN_SECRET=your_refresh_token_secret
 REFRESH_TOKEN_EXPIRY=7d
 ```
+
+> ⚠️ Place your `.env` file inside the `backend/` folder, not the root directory.
 
 **Important**: Never commit the `.env` file to version control. Use `.env.example` as a template.
 
@@ -150,11 +167,14 @@ REFRESH_TOKEN_EXPIRY=7d
 ### Task Routes (`/api/v1/tasks`)
 
 - `POST /` - Create a new task (protected)
-- `GET /` - Get all tasks with optional filters (protected)
-  - Query params: `userId`, `taskStatus`
+- `GET /user-tasks` - Get all tasks for the logged-in user (protected)
 - `GET /:id` - Get task by ID (protected)
 - `PUT /:id` - Update task by ID (protected)
 - `DELETE /:id` - Delete task by ID (protected)
+
+### Admin Routes (`/api/v1/admin`)
+- `GET /users` - Get all users (admin only, protected)
+- `GET /users/:userId/tasks` - Get all tasks for a user (admin only, protected, grouped by status)
 
 ## 📜 Scripts
 
@@ -177,6 +197,12 @@ Authorization: Bearer <access_token>
 ```
 
 Refresh tokens are sent as HTTP-only cookies for security.
+
+## 🛡️ Frontend Route Protection
+
+- The home page (`/`) and admin panel (`/admin/users`, `/admin/users/[id]`) are protected by client-side logic.
+- Cookies `isLogin` and `isAdmin` determine user/admin access. Non-authorized access automatically redirects to `/login`.
+- These protections are handled within each page's React useEffect hook for instant feedback.
 
 ## 📝 License
 

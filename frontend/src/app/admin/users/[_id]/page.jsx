@@ -36,6 +36,9 @@ export default function UserProfilePage() {
     }
 
     useEffect(() => {
+        if (!(Cookies.get('isLogin') && Cookies.get('isAdmin') === 'true')) {
+            navigate.push('/login');
+        }
         loadData()
     }, []);
 
