@@ -2,6 +2,7 @@
 
 - **Frontend (Website):** [https://primetrade-ai-assignment-pi.vercel.app/](https://primetrade-ai-assignment-pi.vercel.app/)
 - **Backend API:** [https://primetrade-ai-assignment-dk7p.onrender.com/api/v1](https://primetrade-ai-assignment-dk7p.onrender.com/api/v1)
+- **Postman API Collection:** [https://www.postman.com/akashdabhane/akash-s-workspace/collection/af3ybpa/primetrade-ai-assignment?action=share&creator=23125120&active-environment=23125120-5a854fa0-99f2-4d14-bd49-ffade6a02d28](https://www.postman.com/akashdabhane/akash-s-workspace/collection/af3ybpa/primetrade-ai-assignment?action=share&creator=23125120&active-environment=23125120-5a854fa0-99f2-4d14-bd49-ffade6a02d28)
 
 ---
 
