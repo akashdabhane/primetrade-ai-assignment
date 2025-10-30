@@ -1,6 +1,9 @@
 'use client';
-import React, { useState } from 'react';
-import { FaPlus, FaTrash, FaEdit } from 'react-icons/fa';
+import { baseUrl } from '@/utils/helper';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FaPlus, FaTrash, FaEdit, FaArrowRight } from 'react-icons/fa';
+import Cookies from 'js-cookie';
 
 const Home = () => {
   const [tasks, setTasks] = useState([]);
@@ -10,29 +13,105 @@ const Home = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [formData, setFormData] = useState({ title: '', description: '' });
 
+  const loadData = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/tasks/user-tasks/`, {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('accessToken')}`
+        }
+      })
+
+      console.log(response.data.data)
+      setTasks(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
   // Add Task
-  const handleAddTask = () => {
-    if (!formData.title) return alert('Title is required!');
-    setTasks([...tasks, { id: Date.now(), ...formData }]);
+  const handleAddTask = async () => {
+    if (!formData.title || formData.title.trim().length < 1) return alert('Title is required!');
+    if (!formData.description || formData.description.trim().length < 1) return alert('Description is required!');
+
+    try {
+      const response = await axios.post(`${baseUrl}/tasks/`, formData, {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('accessToken')}`
+        }
+      })
+
+      console.log(response.data.data)
+      setTasks([response.data.data, ...tasks])
+    } catch (error) {
+      console.log(error)
+    }
+
     setFormData({ title: '', description: '' });
     setShowAddPopup(false);
   };
 
   // Edit Task
-  const handleEditTask = () => {
-    setTasks(tasks.map(t => (t.id === selectedTask.id ? formData : t)));
+  const handleEditTask = async () => {
+    // setTasks(tasks.map(t => (t.id === selectedTask.id ? formData : t)));
+    console.log(formData)
+
+    const { _id, createdAt, updatedAt, __v, ...needFromData } = formData;
+    try {
+      const response = await axios.put(`${baseUrl}/tasks/${selectedTask._id}`, needFromData, {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('accessToken')}`
+        }
+      })
+
+      console.log(response)
+      setTasks(tasks.map(t => t._id === selectedTask._id ? response.data.data : t));
+    } catch (error) {
+      console.log(error)
+    }
+
+    setFormData({ title: '', description: '' })
     setShowEditPopup(false);
   };
 
   // Delete Task
-  const handleDeleteTask = () => {
-    setTasks(tasks.filter(t => t.id !== selectedTask.id));
+  const handleDeleteTask = async () => {
+    try {
+      const response = await axios.delete(`${baseUrl}/tasks/${selectedTask._id}`, {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('accessToken')}`
+        }
+      })
+
+      console.log(response)
+      setTasks(tasks.filter(t => t._id !== selectedTask._id))
+    } catch (error) {
+      console.log(error)
+    }
+
     setShowDeletePopup(false);
   };
 
   return (
     <div className="w-full h-screen py-24 bg-gray-100">
       <div className="mx-4 md:m-auto text-black bg-white p-6 md:w-[70%] rounded-md shadow-md space-y-6">
+        {
+          Cookies.get('isAdmin') && (
+            <button
+              onClick={() => navigate.push('/admin/users')}
+              className="flex items-center gap-2 cursor-pointer hover:text-black text-xl font-bold"
+            >
+              Admin page <FaArrowRight /> 
+            </button>
+          )
+        }
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">Task Manager</h2>
           <button
@@ -56,7 +135,7 @@ const Home = () => {
             </thead>
             <tbody>
               {tasks.map((task, index) => (
-                <tr key={task.id} className="hover:bg-gray-50">
+                <tr key={task._id} className="hover:bg-gray-50">
                   <td className="border border-gray-300 p-3 text-center">{index + 1}</td>
                   <td className="border border-gray-300 p-3">{task.title}</td>
                   <td className="border border-gray-300 p-3">{task.description}</td>

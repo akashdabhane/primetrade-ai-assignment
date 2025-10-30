@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
         const user = await userdb.findById(userId)
-        console.log('first')
         const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
 
@@ -75,7 +74,6 @@ exports.login = asyncHandler(async (req, res) => {
 
     try {
         const user = await userdb.findOne({ email });
-        console.log(user)
         if (!user) {
             throw new ApiError(404, "User not found")
         }

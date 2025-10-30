@@ -5,10 +5,10 @@ const verifyJWT = require('../middlewares/auth.middleware');
 
 // API
 // create task
-router.post('/', controller.createTask); // , verifyJWT
+router.post('/', verifyJWT, controller.createTask);
 
 // get all tasks (supports query filters: userId, taskStatus)
-router.get('/', verifyJWT, controller.getAllTasks);
+router.get('/user-tasks', verifyJWT, controller.getAllTasks);
 
 // get single task by id
 router.get('/:id', verifyJWT, controller.getTaskById);

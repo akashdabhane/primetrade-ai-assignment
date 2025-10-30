@@ -31,5 +31,6 @@ app.get('/', (req, res) => {
 // load routers
 app.use('/api/v1/users', require("./routes/user.routes"));
 app.use('/api/v1/tasks', require("./routes/task.routes"));
+app.use('/api/v1/admin', require("./routes/admin.routes"));
 
 module.exports = app;

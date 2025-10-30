@@ -3,18 +3,16 @@ import React, { useState, useContext } from 'react';
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-// import { useAuth } from '../contexts/LoginContext';
 import axios from 'axios';
 import { baseUrl } from '../../utils/helper';
 import { loginSchema } from '../../validation-schema/login-schema';
 import { useFormik } from "formik";
+import Cookies from 'js-cookie';
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useRouter();
-
-    // const { setIsLogin, setLoggedInUserObject } = useAuth();
 
     // using formik for handling input fields
     const initialValues = {
@@ -40,13 +38,12 @@ export default function Login() {
         try {
             console.log(formData)
             const data = await axios.post(`${baseUrl}/users/login`, formData);
-
-            localStorage.setItem('isLogin', 'true');
-            localStorage.setItem('accessToken', data.data.data.accessToken);
             
-            setIsLogin(true);
-            setLoggedInUserObject(data.data.data.loggedInUser);
-            // navigate to the home page
+            console.log(data.data.data)
+            Cookies.set('isLogin', 'true', { expires: 7 });
+            Cookies.set('accessToken', data.data.data.accessToken)
+            Cookies.set('isAdmin', data.data.data.loggedInUser.isAdmin)
+
             navigate.push('/')
         } catch (error) {
             console.log(error);
@@ -108,7 +105,7 @@ export default function Login() {
                 </form>
 
                 <div className="mx-6 md:mx-24 text-sm space-x-2 -mt-10">
-                    <span>New to BookCave?</span>
+                    <span>New to platform?</span>
                     <Link href='/register' className='text-blue-600'>Register</Link>
                 </div>
             </div>

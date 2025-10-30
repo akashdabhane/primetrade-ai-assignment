@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios'
-// import bgCover from '../images/bgCover.png'
 import { baseUrl } from '../../utils/helper';
 import { registrationSchema } from '../../validation-schema/registration-schema';
 import { useFormik } from "formik";
